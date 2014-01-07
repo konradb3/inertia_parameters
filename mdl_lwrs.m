@@ -1,10 +1,12 @@
-L(1) = Link([  0      0.31     0       pi/2    0], 'standard');
-L(2) = Link([  0      0        0      -pi/2    0], 'standard');
-L(3) = Link([  0      0.4      0      -pi/2    0], 'standard');
-L(4) = Link([  0      0        0       pi/2    0], 'standard');
-L(5) = Link([  0      0.39     0       pi/2    0], 'standard');
-L(6) = Link([  0      0        0      -pi/2    0], 'standard');
-L(7) = Link([  0      0.078    0       0       0], 'standard');
+function mdl = mdl_lwrs()
+
+L(1) = Link([  0      0.31     0      sym('pi/2')   0], 'standard');
+L(2) = Link([  0      0        0      sym('-pi/2')  0], 'standard');
+L(3) = Link([  0      0.4      0      sym('-pi/2')  0], 'standard');
+L(4) = Link([  0      0        0      sym('pi/2')   0], 'standard');
+L(5) = Link([  0      0.39     0      sym('pi/2')   0], 'standard');
+L(6) = Link([  0      0        0      sym('-pi/2')  0], 'standard');
+L(7) = Link([  0      0.078    0      0             0], 'standard');
 
 L(1).m = sym('m1', 'real');
 L(2).m = sym('m2', 'real');
@@ -48,15 +50,22 @@ L(5).G =  1;
 L(6).G =  1;
 L(7).G =  1;
 
+deg = pi/180;
+
+L(1).qlim = [-170 170] * deg;
+L(2).qlim = [-120 120] * deg;
+L(3).qlim = [-170 170] * deg;
+L(4).qlim = [-120 120] * deg;
+L(5).qlim = [-170 170] * deg;
+L(6).qlim = [-120 120] * deg;
+L(7).qlim = [-170 170] * deg;
+
 % viscous friction (motor referenced)
 % unknown
 
 % Coulomb friction (motor referenced)
 % unknown
 
-%lwr.gravity = [-9.81 0 0];
+mdl = SerialLink(L, 'name', 'LWR', 'manufacturer', 'KUKA', 'comment', 'AK&B');
 
-lwr = SerialLink(L, 'name', 'LWR', 'manufacturer', 'KUKA', 'comment', 'AK&B');
-
-lwr.gravity = [-9.81 0 0];
-
+mdl.base = r2t(rotx(pi/3));
