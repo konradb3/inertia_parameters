@@ -1,17 +1,33 @@
-W = H(joints_rand(30));
-[u s v] = svd(W);
+
+Kfun = matlabFunction(K);
+
+W = H(joints_rand(20, lwr), Kfun);
+[u, s, v] = svd(W);
 b = rank(W);
 c = size(v,2);
 
 v2 = v(:, (b+1):size(v,2));
 
+u = [];
 
-z = c + 1 - nchoosek(1:c, c);
+for i = 1:c
+  if(abs(sum(v2(i, :))) < eps*10)
+    u = [u, i];
+  end
+end
+
+z = setdiff(nchoosek(1:c, c), u);
+
+u
+z
+
 I = eye(c);
 while 1
-    P = I(randperm(c),:);
+    P = I([u, z(randperm(size(z, 2)))],:);
+    %z = nextperm(z);
     m = P*v2;
-    if det(m((b+1):c,:)) > eps
+    %det(m((b+1):c,:))
+    if abs(det(m((b+1):c,:))) > eps
         break
     end
 end
@@ -22,9 +38,9 @@ v22 = vv2((b+1):c, :);
 
 B = v21 / v22;
 
-B1 = round(B*1000)/1000;
+B1 = round(B*10000)/10000;
 
-fi = P * B0;
+fi = P * B0';
 fi1 = fi(1:b);
 fi2 = fi((b+1):c);
 
@@ -36,7 +52,9 @@ K12 = K1((b+1):c, :);
 
 K2 = K11 - B1 * K12;
 
-tmp = K*B0 - K11'*fib;
+%tmp = K*B0' - K11'*fib;
+
+tmp = grav_sym - K11'*fib;
 
 z = zeros(1, 7);
 z = sym(z);
@@ -47,6 +65,11 @@ end
 
 %simplify(K*B0 == K11'*fib)
 
-matlabFunction(K11', 'file', 'zxc');
+z
 
+K11fun = matlabFunction(K11', 'file', 'K11fun');
 
+cost2 = @(q)cost(q, K11fun);
+
+opt = optimset(optimset('fmincon'), 'MaxFunEvals', 100000, 'MaxIter', 1000);
+[x, fval] = fmincon(cost2, joints_rand(5, lwr),[], [], [], [], repmat(lwr.qlim(:,1), 5, 1), repmat(lwr.qlim(:,2), 5, 1), [], opt);
