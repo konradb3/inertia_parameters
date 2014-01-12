@@ -1,4 +1,4 @@
-function [ B0, X ] = minineparam( rob )
+function [ B0, X, u, o ] = minineparam( rob )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -20,13 +20,13 @@ function [ B0, X ] = minineparam( rob )
             l(i).r(3)*l(i).m;
             l(i).m];
     
-    B0 = B([8 9]);%[3 4 6 7 8 9]);
+    B0 = B([3 4 6 7 8 9]);
     
     X = [X;
-         %sym(['XYR', num2str(i)]);
-         %sym(['XZR', num2str(i)]);
-         %sym(['YZR', num2str(i)]);
-         %sym(['ZZR', num2str(i)]);
+         sym(['XYR', num2str(i)]);
+         sym(['XZR', num2str(i)]);
+         sym(['YZR', num2str(i)]);
+         sym(['ZZR', num2str(i)]);
          sym(['MXR', num2str(i)]);
          sym(['MYR', num2str(i)]); ];
     
@@ -46,15 +46,32 @@ function [ B0, X ] = minineparam( rob )
             l(i-1).m + B(11);];
 
 
-        B0 = [B0; B([8 9])]; %B([1 3 4 6 7 8 9])];
-        X = [X; %sym(['XXR', num2str(i)]);
-              %sym(['XYR', num2str(i-1)]);
-              %sym(['XZR', num2str(i-1)]);
-              %sym(['YZR', num2str(i-1)]);
-              %sym(['ZZR', num2str(i-1)]);
+        B0 = [B0; B([1 3 4 6 7 8 9])];
+        X = [X; sym(['XXR', num2str(i)]);
+              sym(['XYR', num2str(i-1)]);
+              sym(['XZR', num2str(i-1)]);
+              sym(['YZR', num2str(i-1)]);
+              sym(['ZZR', num2str(i-1)]);
               sym(['MXR', num2str(i-1)]);
               sym(['MYR', num2str(i-1)]); ];
     end
-    %simplify(B0);
+    simplify(B0);
 
+    u = [];
+    o = [];
+    
+    for 1:rob.n
+        u = [u; 
+            sym(['m', num2str(i), '+mx', num2str(i)]);
+            sym(['m', num2str(i), '+my', num2str(i)]);
+            sym(['m', num2str(i), '+mz', num2str(i)]);
+            ];
+        
+        o = [o; 
+            sym(['mxr', num2str(i)]);
+            sym(['myr', num2str(i)]);
+            sym(['mzr', num2str(i)]);
+            ];
+    end
+    
 end
