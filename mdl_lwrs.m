@@ -8,13 +8,13 @@ function mdl = mdl_lwrs()
 % L(6) = Link([  sym('0')      sym('0')        sym('0')      sym('-pi/2')  0], 'standard');
 % L(7) = Link([  sym('0')      sym('0')        sym('0')      sym('0')      0], 'standard');
 
-L(1) = Link([  sym('0')      sym('a1', 'real')     sym('0')      sym('0')   0], 'modified');
+L(1) = Link([  sym('0')      sym('d1', 'real')     sym('0')      sym('0')   0], 'modified');
 L(2) = Link([  sym('0')      sym('0')        sym('0')      sym('-pi/2')  0], 'modified');
-L(3) = Link([  sym('0')      sym('a3', 'real')      sym('0')      sym('pi/2')  0], 'modified');
+L(3) = Link([  sym('0')      sym('d3', 'real')      sym('0')      sym('pi/2')  0], 'modified');
 L(4) = Link([  sym('0')      sym('0')        sym('0')      sym('pi/2')   0], 'modified');
-L(5) = Link([  sym('0')      sym('a5', 'real')     sym('0')      sym('-pi/2')   0], 'modified');
+L(5) = Link([  sym('0')      sym('d5', 'real')     sym('0')      sym('-pi/2')   0], 'modified');
 L(6) = Link([  sym('0')      sym('0')        sym('0')      sym('-pi/2')  0], 'modified');
-L(7) = Link([  sym('0')      sym('0')        sym('0')      sym('pi/2')      0], 'modified');
+L(7) = Link([  sym('0')      sym('d7', 'real')        sym('0')      sym('pi/2')      0], 'modified');
 
 
 L(1).m = sym('m1', 'real');
@@ -86,5 +86,5 @@ L(7).qlim = [-170 170] * deg;
 
 mdl = SerialLink(L, 'name', 'LWR', 'manufacturer', 'KUKA', 'comment', 'AK&B');
 
-mdl.base = r2t(rotx(sym('pi/3')));
+mdl.base = r2t(rotx(sym('C')));
 mdl.gravity = [0 0 sym('g', 'real')];
