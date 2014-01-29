@@ -8,7 +8,7 @@ function mdl = mdl_lwr()
 % L(6) = Link([  sym('0')      sym('0')        sym('0')      sym('-pi/2')  0], 'standard');
 % L(7) = Link([  sym('0')      sym('0')        sym('0')      sym('0')      0], 'standard');
 
-L(1) = Link([  0      0.31     0      -pi/3   0], 'modified');
+L(1) = Link([  0      0.3105   0      0   0], 'modified');
 L(2) = Link([  0      0        0      -pi/2  0], 'modified');
 L(3) = Link([  0      0.4      0      pi/2  0], 'modified');
 L(4) = Link([  0      0        0      pi/2   0], 'modified');
@@ -17,22 +17,22 @@ L(6) = Link([  0      0        0      -pi/2  0], 'modified');
 L(7) = Link([  0      0.078    0      pi/2      0], 'modified');
 
 
-L(1).m = 1;
-L(2).m = 1;
-L(3).m = 1;
-L(4).m = 1;
-L(5).m = 1;
-L(6).m = 1;
+L(1).m = 2;
+L(2).m = 2;
+L(3).m = 2;
+L(4).m = 2;
+L(5).m = 2;
+L(6).m = 2;
 L(7).m = 1;
 
 %         rx      ry      rz
-L(1).r = [    0.0;    0.1187;    0.0484];
-L(2).r = [    0.0;    0.1170;    0.1301];
-L(3).r = [    0.0;    0.1335;    0.1715];
-L(4).r = [    0.0;    0.1296;    0.0169];
+L(1).r = [    0.0;    0.01187;    0.0484];
+L(2).r = [    0.0;    0.01170;    0.1301];
+L(3).r = [    0.0;    0.01335;    0.1715];
+L(4).r = [    0.0;    0.01296;    0.0169];
 L(5).r = [    0.0;    0.0867;    0.1944];
 L(6).r = [    0.0;    0.0280;    0.0063];
-L(7).r = [    0.0;    0.1504;    0.1671];
+L(7).r = [    0.0;    0.0;    0.1671];
 
 %        Ixx     Iyy      Izz    Ixy     Iyz     Ixz
 L(1).I = [    0.0836;    0.0790;    0.0748;     0.0010;    0.0018;    0.0064];
@@ -85,5 +85,5 @@ L(7).qlim = [-170 170] * deg;
 % unknown
 
 mdl = SerialLink(L, 'name', 'LWR', 'manufacturer', 'KUKA', 'comment', 'AK&B');
-
-mdl.base = r2t(rotx(-pi/3));
+mdl.gravity = [0, 0, -9.81];
+mdl.base = r2t(rotx(pi/3));

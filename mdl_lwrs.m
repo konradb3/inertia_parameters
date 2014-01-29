@@ -87,4 +87,13 @@ L(7).qlim = [-170 170] * deg;
 mdl = SerialLink(L, 'name', 'LWR', 'manufacturer', 'KUKA', 'comment', 'AK&B');
 
 mdl.base = r2t(rotx(sym('C')));
+
+mdl.tool = rpy2tr([sym('tr','real') sym('tp','real') sym('ty','real')]);
+
+mdl.tool(1, 4) = sym('tx', 'real');
+mdl.tool(2, 4) = sym('ty', 'real');
+mdl.tool(3, 4) = sym('tz', 'real');
+
 mdl.gravity = [0 0 sym('g', 'real')];
+
+end
