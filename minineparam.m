@@ -1,9 +1,10 @@
-function [ B0, X ] = minineparam( rob )
+function [ B0, X, Z ] = minineparam( rob )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
     B0 = [];
     X = [];
+    Z = [];
     l = rob.links;
     i = rob.n;
     
@@ -29,6 +30,14 @@ function [ B0, X ] = minineparam( rob )
          sym(['m', num2str(i),'*mx', num2str(i)]);
          sym(['m', num2str(i),'*my', num2str(i)]); ];
 
+    Z = [Z;
+         sym(['IXY', num2str(i)], 'real');
+         sym(['IXZ', num2str(i)], 'real');
+         sym(['IYZ', num2str(i)], 'real');
+         sym(['IZZ', num2str(i)], 'real');
+         sym(['MX', num2str(i)], 'real');
+         sym(['MY', num2str(i)], 'real');];
+     
     for d = 1:rob.n-1
         i = rob.n + 1 - d;
 
@@ -53,12 +62,23 @@ function [ B0, X ] = minineparam( rob )
               sym(['izz', num2str(i-1)]);
               sym(['m', num2str(i-1),'*mx', num2str(i-1)]);
               sym(['m', num2str(i-1),'*my', num2str(i-1)]); ];
+        Z = [Z; sym(['IXX', num2str(i)], 'real');
+              sym(['IXY', num2str(i-1)], 'real');
+              sym(['IXZ', num2str(i-1)], 'real');
+              sym(['IYZ', num2str(i-1)], 'real');
+              sym(['IZZ', num2str(i-1)], 'real');
+              sym(['MX', num2str(i-1)], 'real');
+              sym(['MY', num2str(i-1)], 'real'); ];
         else
             B0 = [B0; B([1 7 8 9])];
             X = [X; sym(['ixx', num2str(i)]);
                 sym(['izz', num2str(i-1)]);
                 sym(['m', num2str(i-1),'*mx', num2str(i-1)]);
                 sym(['m', num2str(i-1),'*my', num2str(i-1)]); ];
+            Z = [Z; sym(['IXX', num2str(i)], 'real');
+                sym(['IZZ', num2str(i-1)], 'real');
+                sym(['MX', num2str(i-1)], 'real');
+                sym(['MY', num2str(i-1)], 'real'); ];
         end
     end
     simplify(B0);

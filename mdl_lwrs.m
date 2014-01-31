@@ -8,13 +8,13 @@ function mdl = mdl_lwrs()
 % L(6) = Link([  sym('0')      sym('0')        sym('0')      sym('-pi/2')  0], 'standard');
 % L(7) = Link([  sym('0')      sym('0')        sym('0')      sym('0')      0], 'standard');
 
-L(1) = Link([  sym('0')      sym('d1', 'real')     sym('0')      sym('0')   0], 'modified');
-L(2) = Link([  sym('0')      sym('0')        sym('0')      sym('-pi/2')  0], 'modified');
-L(3) = Link([  sym('0')      sym('d3', 'real')      sym('0')      sym('pi/2')  0], 'modified');
-L(4) = Link([  sym('0')      sym('0')        sym('0')      sym('pi/2')   0], 'modified');
-L(5) = Link([  sym('0')      sym('d5', 'real')     sym('0')      sym('-pi/2')   0], 'modified');
-L(6) = Link([  sym('0')      sym('0')        sym('0')      sym('-pi/2')  0], 'modified');
-L(7) = Link([  sym('0')      sym('d7', 'real')        sym('0')      sym('pi/2')      0], 'modified');
+L(1) = Link([  sym('0')      sym('D1', 'real')     sym('0')      sym('0')         0], 'modified');
+L(2) = Link([  sym('0')      sym('0')              sym('0')      sym('-pi/2')     0], 'modified');
+L(3) = Link([  sym('0')      sym('D3', 'real')     sym('0')      sym('pi/2')      0], 'modified');
+L(4) = Link([  sym('0')      sym('0')              sym('0')      sym('pi/2')      0], 'modified');
+L(5) = Link([  sym('0')      sym('D5', 'real')     sym('0')      sym('-pi/2')     0], 'modified');
+L(6) = Link([  sym('0')      sym('0')              sym('0')      sym('-pi/2')     0], 'modified');
+L(7) = Link([  sym('0')      sym('D7', 'real')     sym('0')      sym('pi/2')      0], 'modified');
 
 
 L(1).m = sym('m1', 'real');
@@ -88,11 +88,15 @@ mdl = SerialLink(L, 'name', 'LWR', 'manufacturer', 'KUKA', 'comment', 'AK&B');
 
 mdl.base = r2t(rotx(sym('C')));
 
-mdl.tool = rpy2tr([sym('tr','real') sym('tp','real') sym('ty','real')]);
+%mdl.tool = rpy2tr([sym('tr','real') sym('tp','real') sym('ty','real')]);
 
-mdl.tool(1, 4) = sym('tx', 'real');
-mdl.tool(2, 4) = sym('ty', 'real');
-mdl.tool(3, 4) = sym('tz', 'real');
+q = Quaternion([sym('tool13', 'real'), sym('tool14', 'real'), sym('tool15', 'real'), sym('tool16', 'real')]);
+
+mdl.tool = q.T;
+
+mdl.tool(1, 4) = sym('tool10', 'real');
+mdl.tool(2, 4) = sym('tool11', 'real');
+mdl.tool(3, 4) = sym('tool12', 'real');
 
 mdl.gravity = [0 0 sym('g', 'real')];
 
