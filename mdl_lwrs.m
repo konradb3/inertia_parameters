@@ -90,13 +90,13 @@ mdl.base = r2t(rotx(sym('C')));
 
 %mdl.tool = rpy2tr([sym('tr','real') sym('tp','real') sym('ty','real')]);
 
-q = Quaternion([sym('tool13', 'real'), sym('tool14', 'real'), sym('tool15', 'real'), sym('tool16', 'real')]);
+q = Quaternion([sym('tool03', 'real'), sym('tool04', 'real'), sym('tool05', 'real'), sym('tool06', 'real')]);
 
 mdl.tool = q.T;
 
-mdl.tool(1, 4) = sym('tool10', 'real');
-mdl.tool(2, 4) = sym('tool11', 'real');
-mdl.tool(3, 4) = sym('tool12', 'real');
+mdl.tool(1, 4) = sym('tool00', 'real');
+mdl.tool(2, 4) = sym('tool01', 'real');
+mdl.tool(3, 4) = sym('tool02', 'real');
 
 mdl.gravity = [0 0 sym('g', 'real')];
 
